@@ -5,4 +5,4 @@ __pycache__/
 *.db
 data/
 .DS_Store
-git
+gitdocs/LEARN.md
