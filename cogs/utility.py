@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import math
+import datetime
 
 class Utility(commands.Cog):
     def __init__(self, bot):
@@ -25,11 +26,27 @@ class Utility(commands.Cog):
     async def userinfo(self, ctx, member: discord.Member = None): #repeating the same as above
         member = member or ctx.author
         # here we start using embeds to make our messages look cleaner and better
-        embed = discord.Embed(title=f"{member.name}'s info", color=0x5865F2) # creating the embed structure with title and color
-        embed.add_field(name="ID", value=member.id) # using a field to display the user's discord ID
-        embed.add_field(name="Top Role", value=member.top_role)
-        embed.add_field(name="Bot?", value=member.bot)
-        embed.set_thumbnail(url=member.display_avatar.url) # displays the user's icon as a thumbnail on the embed
+        embed = discord.Embed(title=f"{member.name} ({member.id})", color=0xFFFFFF) # creating the embed structure with title and color
+        created=member.created_at
+        joined = member.joined_at
+        
+        embed.add_field(name="**Dates**", value=(
+            f"**Created**: {discord.utils.format_dt(created, 'f')} ({discord.utils.format_dt(created, 'R')})\n" # uses discord's time formatting
+            f"**Joined**: {discord.utils.format_dt(joined, 'f')} ({discord.utils.format_dt(joined, 'R')})"
+        ),
+        inline=False,
+    )
+        roles = [role.mention for role in reversed(member.roles) if role != ctx.guild.default_role] # shows roles from highest order first and ignores @everyone role
+        embed.add_field(name=f"**Roles** ({(len(member.roles))-1})", value="".join(roles or "none"), inline=False) # showing member roles while ignoring @everyone role
+        
+        embed.set_thumbnail(url=member.avatar.url) # thumbnail avatar
+        
+        if not ctx.guild.chunked:
+            await ctx.guild.chunk()
+        
+        members= sorted(ctx.guild.members, key=lambda m: m.joined_at or discord.utils.utcnow())
+        position = members.index(member) + 1
+        embed.set_footer(text=f"Join Position: {position}"+f"{len(member.mutual_guilds)} mutual servers")
         await ctx.send(embed=embed)
 
 
