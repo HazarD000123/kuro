@@ -16,7 +16,7 @@ class Utility(commands.Cog):
         member = member or ctx.author # return the mentioned user's avatar or your own avatar if none mentioned
         await ctx.send(member.display_avatar.url)
     
-    @commands.command()
+    @commands.command(aliases=["ui", "uinfo", "whois"])
     async def userinfo(self, ctx, member: discord.Member = None): #repeating the same as above
         member = member or ctx.author
         # here we start using embeds to make our messages look cleaner and better
