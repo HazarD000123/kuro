@@ -21,9 +21,10 @@ bot = commands.Bot(command_prefix=",", intents=intents)
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
-    
-@bot.command()
-async def ping(ctx):
-    await ctx.send("pong")
+
+async def setup_hook():
+    await bot.load_extension("cogs.utility")
+
+bot.setup_hook = setup_hook
 
 bot.run(token)

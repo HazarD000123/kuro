@@ -1,0 +1,9 @@
+git status
+git add .
+git commit -m "what you did"
+git push
+
+git status
+git add README.md
+git commit -m "update readme"
+git push
