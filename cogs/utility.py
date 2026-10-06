@@ -135,7 +135,7 @@ class Utility(commands.Cog):
     @commands.command(aliases=["kuro", "credit"], help="who made kuro")
     async def credits(self, ctx):
         
-        embed= discord.Embed(description="this bot was created by [h.azard](https://discord.com/users/660879218321784852)")
+        embed= discord.Embed(description="this bot was created by [h.azard & yvlsoul](https://discord.com/users/660879218321784852)")
         
         await ctx.send(embed=embed)
 
@@ -151,6 +151,22 @@ class Utility(commands.Cog):
             embed.set_image(url=guild_icon_url)
         
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def bots(self, ctx):
+        guild = ctx.guild
+        bots = []
+        for member in guild.members:
+            if member.bot:
+                bots.append(member)
+        if len(bots)==0:
+            return await ctx.send("There are **no bots** in the server!")
+        text = ""
+        for bot in bots:
+            text = text + bot.mention + "\n"
+        
+        embed = discord.Embed(title=f"Bots in {guild.name}", description = text)
+        await ctx.send (embed=embed)
 
 
 async def setup(bot):
