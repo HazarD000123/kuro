@@ -25,6 +25,7 @@ async def on_ready():
 
 async def setup_hook():
     await bot.load_extension("cogs.utility")
+    await bot.load_extension("cogs.errors")
 
 bot.setup_hook = setup_hook
 
