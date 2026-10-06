@@ -22,6 +22,13 @@ class Utility(commands.Cog):
         embed.set_image(url=member.display_avatar.url)
         await ctx.send(embed=embed)
     
+    @commands.command()
+    async def banner(self, ctx, member: discord.Member = None):
+        member = member or ctx.author
+        embed = discord.Embed(title=f"{member.name}'s banner", color=0xFFFFFF)
+        embed.set_image(url=member.banner.url)
+        await ctx.send(embed=embed)
+    
     @commands.command(aliases=["ui", "uinfo", "whois"], help="Show userinfo of someone")
     async def userinfo(self, ctx, member: discord.Member = None): #repeating the same as above
         member = member or ctx.author
