@@ -120,7 +120,6 @@ class Utility(commands.Cog):
                 totalhumans += 1 # we can then just directly use the inbuilt function that
                                 # discord gives to check if the `member` is a bot or not
                                 # then we can just directly append it to our empty variable
-
                 
         embed.add_field(name="**Humans**", value=totalhumans)
         
