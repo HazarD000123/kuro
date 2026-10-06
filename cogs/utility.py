@@ -69,7 +69,7 @@ class Utility(commands.Cog):
         embed.set_footer(text=f"Join Position: {position} · {len(member.mutual_guilds)} mutual servers")
         await ctx.send(embed=embed)
     
-    @commands.command()
+    @commands.command(aliases=["si", "sinfo"], help="Show information about a guild")
     async def serverinfo(self, ctx):
         guild = ctx.guild
         embed= discord.Embed(title=f"{guild.name} ({guild.id})")
@@ -108,7 +108,30 @@ class Utility(commands.Cog):
         
         await ctx.send(embed=embed)
         
+    @commands.command(aliases=["mc"], help="Shows membercount")
+    async def membercount(self, ctx):
+        guild=ctx.guild
+        embed = discord.Embed(title=f"{guild.name}'s statistics")
+        embed.add_field(name="**Users**", value=guild.member_count)
         
+        totalhumans = 0
+        for member in ctx.guild.members:
+            if not member.bot: # we use a for loop with the main variable as `member`
+                totalhumans += 1 # we can then just directly use the inbuilt function that
+                                # discord gives to check if the `member` is a bot or not
+                                # then we can just directly append it to our empty variable
+
+                
+        embed.add_field(name="**Humans**", value=totalhumans)
+        
+        totalbots = 0
+        for bot in guild.members:
+            if member.bot:
+                totalbots += 1
+        
+        embed.add_field(name="**Bots**", value=totalbots)
+        
+        await ctx.send(embed=embed)
 
 
 async def setup(bot):
