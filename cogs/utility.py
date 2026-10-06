@@ -15,7 +15,7 @@ class Utility(commands.Cog):
         await ctx.send(embed=embed)
     
     @commands.command(aliases=["av", "pfp"], help="Show someone's pfp")
-    async def avatar(self, ctx, member: discord.User = None): # the member: discord.Member tells discord.py to turn whatever the user typed (can be an id, mention, etc) into a Member object
+    async def avatar(self, ctx, user: discord.User = None): # the member: discord.Member tells discord.py to turn whatever the user typed (can be an id, mention, etc) into a Member object
                                                                 # the = None makes the entire argument just optional
         # return the mentioned user's avatar or your own avatar if noone mentioned
         if user == None:
@@ -23,8 +23,8 @@ class Utility(commands.Cog):
         
         user = await self.bot.fetch_user(user.id)
         
-        embed= discord.Embed(title=f"{member.name}'s pfp", color=0xFFFFFF)
-        embed.set_image(url=member.display_avatar.url)
+        embed= discord.Embed(title=f"{user.name}'s pfp", color=0xFFFFFF)
+        embed.set_image(url=user.display_avatar.url)
         await ctx.send(embed=embed)
     
     @commands.command(help="Show someone's banner")
@@ -125,7 +125,7 @@ class Utility(commands.Cog):
         embed.add_field(name="**Humans**", value=totalhumans)
         
         totalbots = 0
-        for bot in guild.members:
+        for member in guild.members:
             if member.bot:
                 totalbots += 1
         
