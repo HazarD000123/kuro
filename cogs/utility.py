@@ -131,7 +131,26 @@ class Utility(commands.Cog):
         embed.add_field(name="**Bots**", value=totalbots)
         
         await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["kuro", "credit"], help="who made kuro")
+    async def credits(self, ctx):
+        
+        embed= discord.Embed(description="this bot was created by [h.azard](https://discord.com/users/660879218321784852)")
+        
+        await ctx.send(embed=embed)
 
+    @commands.command(aliases=["sicon", "guildicon", "gicon"])
+    async def servericon(self, ctx):
+        guild = ctx.guild
+        embed = discord.Embed(title=f"{guild.name}'s icon")
+        
+        if guild.icon == None:
+            await ctx.send(f"{guild.name} has **no** icon set!")
+        else:
+            guild_icon_url= guild.icon.url
+            embed.set_image(url=guild_icon_url)
+        
+        await ctx.send(embed=embed)
 
 
 async def setup(bot):
