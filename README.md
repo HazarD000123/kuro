@@ -6,4 +6,7 @@ by AI have several issues or just look terrible.
 I'm making this to help vibe-coders get better
 at making their bots
 
+im also using this project as a way to revise
+discord.py and python
+
 (work in progress)

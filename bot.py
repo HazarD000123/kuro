@@ -11,6 +11,7 @@ token = os.getenv("TOKEN")
 intents = discord.Intents.default()
 intents.message_content= True
 intents.members= True
+intents.presences= True
 
 # here I created the bot object with the prefix and intents that i set up above
 bot = commands.Bot(command_prefix=",", intents=intents)

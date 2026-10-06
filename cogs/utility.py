@@ -71,16 +71,40 @@ class Utility(commands.Cog):
     
     @commands.command()
     async def serverinfo(self, ctx):
-        guild=ctx.guild
-        
+        guild = ctx.guild
         embed= discord.Embed(title=f"{guild.name} ({guild.id})")
-        embed.add_field(name="**Server owner**", value=guild.owner)
-        embed.add_field(name="**Members**", value=guild.member_count)
+        embed.add_field(name="**Server owner**", value=guild.owner.mention, inline=False)
+        embed.add_field(name="**Members**", value=(
+            f"Total: {guild.member_count}\n"
+            f"Online: {sum(member.status == discord.Status.online for member in ctx.guild.members)}\n"
+            f"Offline: {sum(member.status == discord.Status.offline for member in ctx.guild.members)}"
+        ))
         embed.add_field(name="**Roles**", value=len(guild.roles))
-        embed.add_field(name="**Channels**", value=len(guild.channels))
+        embed.add_field(name="**Channels**", value=(
+            f"Text: {len(guild.text_channels)}\n"
+            f"Voice: {len(guild.voice_channels)}\n"
+            f"Categories: {len(guild.categories)}"
+        ))
         embed.add_field(name="**Emojis**", value=len(guild.emojis))
         embed.add_field(name="**Verification**", value=guild.verification_level)
         embed.add_field(name="**Boosts**", value=guild.premium_subscription_count)
+        
+        if guild.icon == None:
+            guild_icon_url = "No **icon** set"
+        else:
+            guild_icon_url = guild.icon.url
+            embed.set_thumbnail(url=guild_icon_url)
+        
+        if guild.banner == None:
+            guild_banner_url = "No **banner** set"
+        else:
+            guild_banner_url = guild.banner.url
+            embed.set_image(url=guild_banner_url)
+        
+        embed.add_field(name="**Images**", value=(
+            f"**Guild Icon**: [Icon]({guild_icon_url})\n"
+            f"**Guild Banner**: [Banner]({guild_banner_url})"
+        ))
         
         await ctx.send(embed=embed)
         
