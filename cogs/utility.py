@@ -139,7 +139,7 @@ class Utility(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["sicon", "guildicon", "gicon"])
+    @commands.command(aliases=["sicon", "guildicon", "gicon"], help="Show server icon")
     async def servericon(self, ctx):
         guild = ctx.guild
         embed = discord.Embed(title=f"{guild.name}'s icon")
@@ -152,7 +152,7 @@ class Utility(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(help="Show all bots in the server")
     async def bots(self, ctx):
         guild = ctx.guild
         bots = []
@@ -168,7 +168,7 @@ class Utility(commands.Cog):
         embed = discord.Embed(title=f"Bots in {guild.name}", description = text)
         await ctx.send (embed=embed)
 
-    @commands.command()
+    @commands.command(help="Show people in a role")
     async def inrole(self, ctx, role: discord.Role = None):
         if role == None:
             await ctx.send ("You **must mention** a role!")
@@ -186,6 +186,46 @@ class Utility(commands.Cog):
             
             embed = discord.Embed(title=f"Members in {role.name}", description= text)
             await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["ii"], help="Show invite info")
+    async def inviteinfo(self, ctx, code: str):
+        try:    
+            invite = await self.bot.fetch_invite(code, with_counts=True)
+        except discord.NotFound:
+            return await ctx.send ("Invalid invite **code**!")
+        
+        if invite.inviter == None:
+            inviter_name = "Unknown"
+        else:
+            inviter_name = invite.inviter.name
+        
+        channel = invite.channel
+        guild = invite.guild
+        embed= discord.Embed(title=f"Invite Code: {code}")
+        embed.add_field(name="Channel & Invite", value=(
+            f"**Name**: {channel.name}\n"
+            f"**ID**: `{channel.id}`\n"
+            f"**Inviter**: {inviter_name}\n"
+            f"**Temporary**: {'Yes' if invite.temporary else 'N/a'}\n"
+            f"**Usage**: {invite.uses}"
+        ), inline=True)
+            
+        embed.add_field(name="Guild", value=(
+            f"**Name**: {guild.name}\n"
+            f"**ID**: `{guild.id}`\n"
+            f"**Created**: {guild.created_at}\n"
+            f"**Members**: {invite.approximate_member_count}\n"
+            f"**Verification Level**: {str(guild.verification_level).title()}"
+        ))
+            
+        if guild.icon == None:
+            guild_icon_url = "https://cdn.discordapp.com/embed/avatars/0.png"
+        else:
+            guild_icon_url = guild.icon.url
+        embed.set_thumbnail(url=guild_icon_url)
+        await ctx.send(embed=embed)
+        
+        
 
 async def setup(bot):
     await bot.add_cog(Utility(bot))
