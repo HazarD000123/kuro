@@ -168,6 +168,24 @@ class Utility(commands.Cog):
         embed = discord.Embed(title=f"Bots in {guild.name}", description = text)
         await ctx.send (embed=embed)
 
+    @commands.command()
+    async def inrole(self, ctx, role: discord.Role = None):
+        if role == None:
+            await ctx.send ("You **must mention** a role!")
+        else:
+            inroleppl = []
+            for members in role.members:
+                inroleppl.append(members)
+            
+            if len(inroleppl) == 0:
+                text = "**Nobody** has this role!"
+            else:
+                text = ""
+                for ppl in inroleppl:
+                    text = text + ppl.mention + "\n"
+            
+            embed = discord.Embed(title=f"Members in {role.name}", description= text)
+            await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Utility(bot))
